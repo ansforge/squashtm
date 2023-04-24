@@ -45,7 +45,7 @@ POSTGRES_PASSWORD = {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_db_pass
                 volume_driver = "pxd"
             }
             resources {
-                cpu    = 600
+                cpu    = 2000
                 memory = 2048
             }
             
