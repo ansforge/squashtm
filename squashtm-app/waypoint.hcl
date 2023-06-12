@@ -28,9 +28,15 @@ app "forge/squashtm-app" {
             image   = var.image
             tag     = var.tag
             datacenter = var.datacenter
+            servername_squash = var.servername_squash
             })
         }
     }
+}
+
+variable "servername_squash" {
+     type    = string
+     default = "squash.asipsante.fr"
 }
 
 variable "datacenter" {

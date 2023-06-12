@@ -73,7 +73,7 @@ EOH
             
             service {
                 name = "$\u007BNOMAD_JOB_NAME\u007D"
-                tags = ["urlprefix-squash.asipsante.fr/"]
+                tags = ["urlprefix-${servername_squash}/"]
                 port = "http"
                 check {
                     name     = "alive"
