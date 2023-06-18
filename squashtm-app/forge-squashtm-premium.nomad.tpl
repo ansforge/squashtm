@@ -51,20 +51,29 @@ EOH
                 change_mode = "restart"
             }
 
-            config {
+           config {
                 image   = "${image}:${tag}"
                 ports   = ["http"]
-
+extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                 mount {
-                    type = "bind"
-                    target = "/opt/squash-tm/plugins/license/squash-tm.lic"
-                    source = "secret/squash-tm.lic"
+                    type = "volume"
+                    target = "/opt/squash-tm"
+                    source = "squash_app"
                     readonly = false
-                    bind_options {
-                        propagation = "rshared"
-                    }
+                    volume_options {
+                        no_copy = false
+                        driver_config {
+                            name = "pxd"
+                            options {
+                                io_priority = "high"
+                                size = 2
+                                repl = 1
+                            }
+                        }
                 }
             }
+			
+			
 
             resources {
                 cpu    = 2000
