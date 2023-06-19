@@ -51,7 +51,7 @@ EOH
                 change_mode = "restart"
             }
 
-           config {
+            config {
                 image   = "${image}:${tag}"
                 ports   = ["http"]
 extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
@@ -71,9 +71,8 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                             }
                         }
                 }
+              }
             }
-			
-			
 
             resources {
                 cpu    = 2000
