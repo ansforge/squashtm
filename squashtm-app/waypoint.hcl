@@ -42,7 +42,7 @@ app "forge/squashtm-app" {
     }
 }
 
-variable "servername_squash" {
+variable "servernamesquash" {
      type    = string
      default = "squash.asipsante.fr"
 }
