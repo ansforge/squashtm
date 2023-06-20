@@ -50,7 +50,8 @@ job "forge-squashtm-premium" {
             }
 			#Mise en place du trustore java avec les AC ANS
             artifact { 
-	    	    source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
+	    	    source = "http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/asip-ac/truststore/cacerts"
+				              
                 options {
 		            archive = false
   		        }
