@@ -37,6 +37,7 @@ app "forge/squashtm-app" {
             url_proxy_sortant_http_port = var.url_proxy_sortant_http_port
             url_proxy_sortant_https_port = var.url_proxy_sortant_https_port
             url_proxy_sortant_no_proxy = var.url_proxy_sortant_no_proxy
+			repo_url = var.repo_url
             })
         }
     }
