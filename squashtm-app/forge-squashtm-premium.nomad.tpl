@@ -152,15 +152,15 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                     }
                 }
 
-                mount {
-                    type = "bind"
-                    target = "/opt/squash-tm/plugins/${pluginbugtrackerjiracloud}"
-                    source = "local/${pluginbugtrackerjiracloud}"
-                    readonly = true
-                    bind_options {
-                        propagation = "rshared"
-                    }
-                }
+               # mount {
+                #    type = "bind"
+                 #   target = "/opt/squash-tm/plugins/${pluginbugtrackerjiracloud}"
+                 #   source = "local/${pluginbugtrackerjiracloud}"
+                  #  readonly = true
+                  #  bind_options {
+                   #     propagation = "rshared"
+                   # }
+                #}
 				# Trustore java contenant les AC ANS    
                 mount {
                     type = "bind"

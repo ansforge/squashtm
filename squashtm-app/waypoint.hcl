@@ -30,7 +30,7 @@ app "forge/squashtm-app" {
             datacenter = var.datacenter
             pluginjaxbapi = var.pluginjaxbapi
             pluginjaxbimpl = var.pluginjaxbimpl
-            pluginbugtrackerjiracloud = var.pluginbugtrackerjiracloud
+            #pluginbugtrackerjiracloud = var.pluginbugtrackerjiracloud
             servername_squash = var.servername_squash
             url_proxy_sortant_http_host = var.url_proxy_sortant_http_host
             url_proxy_sortant_https_host = var.url_proxy_sortant_https_host
