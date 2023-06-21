@@ -42,12 +42,12 @@ job "forge-squashtm-premium" {
                 }
             }
 
-            artifact {
-                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
-                options {
-                    archive = false
-                }
-            }
+            #artifact {
+            #    source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
+             #   options {
+              #      archive = false
+               # }
+            #}
 			#Mise en place du trustore java avec les AC ANS
             artifact { 
 	    	    source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
