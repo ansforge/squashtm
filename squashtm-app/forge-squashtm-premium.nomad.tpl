@@ -29,28 +29,28 @@ job "forge-squashtm-premium" {
             driver = "docker"
 
             artifact {
-                source = "http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbapi}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbapi}"
                 options {
                     archive = false
                 }
             }
 
             artifact {
-                source = "http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbimpl}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbimpl}"
                 options {
                     archive = false
                 }
             }
 
             artifact {
-                source = "http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
                 options {
                     archive = false
                 }
             }
 			#Mise en place du trustore java avec les AC ANS
             artifact { 
-	    	    source = "http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/asip-ac/truststore/cacerts"
+	    	    source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
 				              
                 options {
 		            archive = false
@@ -180,7 +180,7 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
             
             service {
                 name = "$\u007BNOMAD_JOB_NAME\u007D"
-                tags = ["urlprefix-${servername_squash}/"]
+                tags = ["urlprefix-${servernamesquash}/"]
                 port = "http"
                 check {
                     name     = "alive"
