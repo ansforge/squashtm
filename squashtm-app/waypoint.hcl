@@ -31,7 +31,7 @@ app "forge/squashtm-app" {
             pluginjaxbapi = var.pluginjaxbapi
             pluginjaxbimpl = var.pluginjaxbimpl
             pluginbugtrackerjiracloud = var.pluginbugtrackerjiracloud
-            servernamesquash = var.servernamesquash
+            servername_squash = var.servername_squash
             url_proxy_sortant_http_host = var.url_proxy_sortant_http_host
             url_proxy_sortant_https_host = var.url_proxy_sortant_https_host
             url_proxy_sortant_http_port = var.url_proxy_sortant_http_port
@@ -43,7 +43,7 @@ app "forge/squashtm-app" {
     }
 }
 
-variable "servernamesquash" {
+variable "servername_squash" {
      type    = string
      default = "squash.forge.henix.asipsante.fr"
 }

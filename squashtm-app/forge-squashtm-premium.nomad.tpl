@@ -180,7 +180,7 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
             
             service {
                 name = "$\u007BNOMAD_JOB_NAME\u007D"
-                tags = ["urlprefix-${servernamesquash}/"]
+                tags = ["urlprefix-${servername_squash}/"]
                 port = "http"
                 check {
                     name     = "alive"
