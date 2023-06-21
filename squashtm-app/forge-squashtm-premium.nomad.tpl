@@ -42,12 +42,6 @@ job "forge-squashtm-premium" {
                 }
             }
 
-            #artifact {
-            #    source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
-             #   options {
-              #      archive = false
-               # }
-            #}
 			#Mise en place du trustore java avec les AC ANS
             artifact { 
 	    	    source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
@@ -152,15 +146,6 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                     }
                 }
 
-               # mount {
-                #    type = "bind"
-                 #   target = "/opt/squash-tm/plugins/${pluginbugtrackerjiracloud}"
-                 #   source = "local/${pluginbugtrackerjiracloud}"
-                  #  readonly = true
-                  #  bind_options {
-                   #     propagation = "rshared"
-                   # }
-                #}
 				# Trustore java contenant les AC ANS    
                 mount {
                     type = "bind"

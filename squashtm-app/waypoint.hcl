@@ -30,7 +30,6 @@ app "forge/squashtm-app" {
             datacenter = var.datacenter
             pluginjaxbapi = var.pluginjaxbapi
             pluginjaxbimpl = var.pluginjaxbimpl
-            #pluginbugtrackerjiracloud = var.pluginbugtrackerjiracloud
             servername_squash = var.servername_squash
             url_proxy_sortant_http_host = var.url_proxy_sortant_http_host
             url_proxy_sortant_https_host = var.url_proxy_sortant_https_host
@@ -72,10 +71,6 @@ variable "pluginjaxbimpl" {
     default = "jaxb-impl-2.2.3.jar"
 }
 
-variable "pluginbugtrackerjiracloud" {
-   type    = string
-    default = "plugin.bugtracker.jiracloud-4.0.0.RELEASE.jar"
-}
 variable "url_proxy_sortant_http_host" {
     type    = string
     default = "c-ac-proxy01.asip.hst.fluxus.net"
