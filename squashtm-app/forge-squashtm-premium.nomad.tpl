@@ -48,14 +48,13 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-			#Mise en place du trustore java avec les AC ANS
+            #Mise en place du trustore java avec les AC ANS
             artifact { 
-	    	    source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
-				              
+                source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
                 options {
-		            archive = false
-  		        }
-		    }
+                    archive = false
+                }
+            }
 
             template {
                 data = <<EOH
@@ -103,34 +102,26 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
             config {
                 image   = "${image}:${tag}"
                 ports   = ["http"]
-extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
-                mount {
-                    type = "volume"
-                    target = "/opt/squash-tm"
-                    source = "squash_app"
-                    readonly = false
-                    volume_options {
-                        no_copy = false
-                        driver_config {
-                            name = "pxd"
-                            options {
-                                io_priority = "high"
-                                size = 2
-                                repl = 1
-                            }
-                        }
-                }
-              }
-                # Fichier de configuration log4j2
+
                 mount {
                     type = "bind"
-                    target = "/opt/squash-tm/conf/log4j2.xml"
-                    source = "local/log4j2.xml"
+                    target = "/opt/squash-tm/plugins/license/squash-tm.lic"
+                    source = "secret/squash-tm.lic"
                     readonly = false
                     bind_options {
                         propagation = "rshared"
                     }
                 }
+                #Fichier de configuration log4j2
+                #mount {
+                 #   type = "bind"
+                  #  target = "/opt/squash-tm/conf/log4j2.xml"
+                  #  source = "local/log4j2.xml"
+                   # readonly = false
+                    #bind_options {
+                     #   propagation = "rshared"
+                    #}
+                #}
 
                 mount {
                     type = "bind"
@@ -161,7 +152,7 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                         propagation = "rshared"
                     }
                 }
-				# Trustore java contenant les AC ANS    
+                # Trustore java contenant les AC ANS    
                 mount {
                     type = "bind"
                     target = "/opt/java/openjdk/lib/security/cacerts"
@@ -172,7 +163,6 @@ extra_hosts = ["squashtm.db.internal:$\u007BNOMAD_IP_http\u007D"]
                     }
                 } 
             }
-
             resources {
                 cpu    = 600
                 memory = 4096
