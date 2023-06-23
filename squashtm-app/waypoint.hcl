@@ -45,7 +45,7 @@ app "forge/squashtm-app" {
 
 variable "servername_squash" {
      type    = string
-     default = "squash.forge.henix.asipsante.fr"
+     default = "squash.asipsante.fr"
 }
 
 variable "datacenter" {
