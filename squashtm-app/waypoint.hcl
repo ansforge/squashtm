@@ -102,5 +102,5 @@ variable "url_proxy_sortant_no_proxy" {
 }
 variable "repo_url" {
     type    = string
-    default = "repo.proxy.prod.forge.esante.gouv.fr"
+    default = "repo.proxy.dev.forge.esante.gouv.fr"
 }
