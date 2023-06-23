@@ -74,7 +74,7 @@ variable "pluginjaxbimpl" {
 
 variable "pluginbugtrackerjiracloud" {
    type    = string
-    default = "plugin.bugtracker.jiracloud-4.0.0.RELEASE.jar"
+    default = "bugtracker.jiracloud-5.0.0.RELEASE.jar"
 }
 variable "url_proxy_sortant_http_host" {
     type    = string
