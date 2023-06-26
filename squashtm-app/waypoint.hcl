@@ -45,7 +45,7 @@ app "forge/squashtm-app" {
 
 variable "servername_squash" {
      type    = string
-     default = "quash.forge.henix.asipsante.fr"
+     default = "squash.asipsante.fr"
 }
 
 variable "datacenter" {
@@ -102,5 +102,5 @@ variable "url_proxy_sortant_no_proxy" {
 }
 variable "repo_url" {
     type    = string
-    default = "repo.proxy.prod.forge.esante.gouv.fr"
+    default = "https://repo.proxy.prod.forge.esante.gouv.fr"
 }

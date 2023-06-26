@@ -29,28 +29,28 @@ job "forge-squashtm-premium" {
             driver = "docker"
 
             artifact {
-                source = "http://${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbapi}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbapi}"
                 options {
                     archive = false
                 }
             }
 
             artifact {
-                source = "http://${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbimpl}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbimpl}"
                 options {
                     archive = false
                 }
             }
 
             artifact {
-                source = "http://${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginbugtrackerjiracloud}"
                 options {
                     archive = false
                 }
             }
             #Mise en place du trustore java avec les AC ANS
             artifact { 
-                source = "http://${repo_url}/artifactory/asip-ac/truststore/cacerts"
+                source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
                 options {
                     archive = false
                 }
