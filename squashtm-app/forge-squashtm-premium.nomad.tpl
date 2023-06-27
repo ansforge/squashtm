@@ -112,7 +112,8 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-                Fichier de configuration log4j2
+
+                # Fichier de configuration log4j2
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/conf/log4j2.xml"
