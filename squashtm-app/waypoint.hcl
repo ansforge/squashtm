@@ -98,7 +98,7 @@ variable "url_proxy_sortant_https_port" {
 
 variable "url_proxy_sortant_no_proxy" {
     type    = string
-    default = "\".asip.hst.fluxus.net|.esante.gouv.fr\""
+    default = "\"*.asip.hst.fluxus.net|*.esante.gouv.fr|*.asipsante.fr\""
 }
 variable "repo_url" {
     type    = string

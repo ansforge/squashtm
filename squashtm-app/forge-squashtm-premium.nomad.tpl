@@ -48,8 +48,17 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-            #Mise en place du trustore java avec les AC ANS
-            artifact { 
+
+            # Récupération du fichier log4j sur Artifactory
+            artifact {
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/conf/log4j2.xml"
+                options {
+                    archive = false
+                }
+            }
+
+            # Mise en place du trustore java avec les AC ANS
+            artifact {
                 source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
                 options {
                     archive = false
@@ -80,16 +89,7 @@ EOH
                 change_mode = "restart"
             }
 
-# Fichier de configuration log4j2
-            template {
-                change_mode = "restart"
-                destination = "local/log4j2.xml"
-                data = <<EOT
-{{ with secret "forge/squashtm" }}{{.Data.data.log4j2}}{{end}}
-EOT
-            }
-
-# Ajout d'une confifguration pour le proxy sortant
+            # Ajout d'une configuration pour le proxy sortant
             template {
                 data = <<EOH
 JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortant_https_host} -Dhttps.proxyPort=${url_proxy_sortant_https_port} -Dhttp.proxyHost=${url_proxy_sortant_http_host} -Dhttp.proxyPort=${url_proxy_sortant_http_port} -Dhttp.nonProxyHosts=${url_proxy_sortant_no_proxy}"
@@ -112,16 +112,16 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-                #Fichier de configuration log4j2
-                #mount {
-                 #   type = "bind"
-                  #  target = "/opt/squash-tm/conf/log4j2.xml"
-                  #  source = "local/log4j2.xml"
-                   # readonly = false
-                    #bind_options {
-                     #   propagation = "rshared"
-                    #}
-                #}
+                Fichier de configuration log4j2
+                mount {
+                    type = "bind"
+                    target = "/opt/squash-tm/conf/log4j2.xml"
+                    source = "local/log4j2.xml"
+                    readonly = false
+                    bind_options {
+                        propagation = "rshared"
+                    }
+                }
 
                 mount {
                     type = "bind"
@@ -152,7 +152,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-                # Trustore java contenant les AC ANS    
+                # Trustore java contenant les AC ANS
                 mount {
                     type = "bind"
                     target = "/opt/java/openjdk/lib/security/cacerts"
