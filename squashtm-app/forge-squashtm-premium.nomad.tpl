@@ -51,7 +51,7 @@ job "forge-squashtm-premium" {
 
             # Récupération du fichier log4j sur Artifactory
             artifact {
-                source = "${repo_url}/artifactory/ext-tools/squash-tm/conf/log4j2.xml"
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/conf/5.0.x/log4j2.xml"
                 options {
                     archive = false
                 }
