@@ -88,6 +88,13 @@ EOH
                 destination = "secret/squash-tm.lic"
                 change_mode = "restart"
             }
+			template {
+                data = <<EOH
+{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_licence }}{{ end }}
+EOH
+                destination = "secret/squash-tm.lic"
+                change_mode = "restart"
+            }
 
             # Ajout d'une configuration pour le proxy sortant
             template {
