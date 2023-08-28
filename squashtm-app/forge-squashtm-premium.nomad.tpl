@@ -144,7 +144,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "local/squash.tm.cfg.properties"
+                    source = "secret/squash.tm.cfg.properties"
                     readonly = false
                     bind_options {
                         propagation = "rshared"
