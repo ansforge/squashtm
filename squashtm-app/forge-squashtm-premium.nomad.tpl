@@ -75,13 +75,6 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-			# Récupération du fichier squash.tm.cfg sur Artifactory
-            #artifact {
-            #    source = "${repo_url}/artifactory/ext-tools/squash-tm/conf/5.0.x/squash.tm.cfg.properties"
-            #   options {
-             #       archive = false
-              #  }
-            #}
 			
             # Mise en place du trustore java avec les AC ANS
             artifact {
@@ -118,7 +111,7 @@ EOH
 			# Ajout configuration LDAP dans squash.tm.cfg
 			template {
                 data = <<EOH
-{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_squash.tm.cfg }}{{ end }}
+{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_cfg }}{{ end }}
 EOH
                 destination = "secret/squash.tm.cfg.properties"
                 change_mode = "restart"
