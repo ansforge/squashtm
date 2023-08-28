@@ -123,7 +123,3 @@ variable "pluginspringsecurityldap" {
     type    = string
     default = "spring-security-ldap-5.7.6.jar"
 }
-variable "pluginspringsecurityldap" {
-    type    = string
-    default = "spring-security-ldap-5.7.6.jar"
-}
