@@ -109,13 +109,13 @@ EOH
                 change_mode = "restart"
             }
 			# Ajout configuration LDAP dans squash.tm.cfg
-			template {
-                data = <<EOH
-{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_cfg }}{{ end }}
-EOH
-                destination = "secret/squash.tm.cfg.properties"
-                change_mode = "restart"
-            }
+			#template {
+               # data = <<EOH
+#{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_cfg }}{{ end }}
+#EOH
+ #               destination = "secret/squash.tm.cfg.properties"
+  #              change_mode = "restart"
+   #         }
             # Ajout d'une configuration pour le proxy sortant
             template {
                 data = <<EOH
@@ -141,15 +141,15 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 }
 
                 # Fichier de configuration squash.tm.cfg
-                mount {
-                    type = "bind"
-                    target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "secret/squash.tm.cfg.properties"
-                    readonly = false
-                    bind_options {
-                        propagation = "rshared"
-                    }
-                }
+               # mount {
+                #    type = "bind"
+                 #   target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
+                  #  source = "secret/squash.tm.cfg.properties"
+                   # readonly = false
+                    #bind_options {
+                     #   propagation = "rshared"
+                    #}
+                #}
 				# Fichier de configuration log4j2
                 mount {
                     type = "bind"
