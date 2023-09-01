@@ -8,7 +8,7 @@ job "forge-squashtm-postgresql" {
     }
     group "squashtm-postgresql" {
         count ="1"
-        
+
         restart {
             attempts = 3
             delay = "60s"
@@ -24,9 +24,13 @@ job "forge-squashtm-postgresql" {
         network {
             port "postgres" { to = 5432 }
         }
-        
+
         task "postgres" {
             driver = "docker"
+
+            # log-shipper
+            leader = true 
+
             template {
                 data = <<EOH
 POSTGRES_DB = {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_db_name }}{{ end }}
@@ -60,6 +64,37 @@ POSTGRES_PASSWORD = {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_db_pass
                     port     = "postgres"
                 }
             }
-        } 
+        }
+
+        # log-shipper
+        task "log-shipper" {
+            driver = "docker"
+            restart {
+                    interval = "3m"
+                    attempts = 5
+                    delay    = "15s"
+                    mode     = "delay"
+            }
+            meta {
+                INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+            }
+            template {
+                data = <<EOH
+REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
+PILE_ELK_APPLICATION = SQUASHTM 
+EOH
+                destination = "local/file.env"
+                change_mode = "restart"
+                env = true
+            }
+            config {
+                image = "ans/nomad-filebeat:8.2.3-2.0"
+            }
+            resources {
+                cpu    = 100
+                memory = 150
+            }
+        } #end log-shipper 
+
     }
 }
