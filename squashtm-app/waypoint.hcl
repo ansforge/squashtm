@@ -38,6 +38,9 @@ app "forge/squashtm-app" {
             url_proxy_sortant_https_port = var.url_proxy_sortant_https_port
             url_proxy_sortant_no_proxy = var.url_proxy_sortant_no_proxy
             repo_url = var.repo_url
+			pluginsecurityldap = var.pluginsecurityldap
+			pluginspringldapcore = var.pluginspringldapcore
+			pluginspringsecurityldap = var.pluginspringsecurityldap
             })
         }
     }
@@ -103,4 +106,20 @@ variable "url_proxy_sortant_no_proxy" {
 variable "repo_url" {
     type    = string
     default = "https://repo.proxy.prod.forge.esante.gouv.fr"
+}
+#modif Ã  faire
+
+
+variable "pluginsecurityldap" {
+    type    = string
+    default = "security.ldap-5.0.0.RELEASE.jar"
+}
+
+variable "pluginspringldapcore" {
+    type    = string
+    default = "spring-ldap-core-2.4.1.jar"
+}
+variable "pluginspringsecurityldap" {
+    type    = string
+    default = "spring-security-ldap-5.7.6.jar"
 }
