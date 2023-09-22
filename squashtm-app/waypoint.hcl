@@ -41,6 +41,7 @@ app "forge/squashtm-app" {
 			pluginsecurityldap = var.pluginsecurityldap
 			pluginspringldapcore = var.pluginspringldapcore
 			pluginspringsecurityldap = var.pluginspringsecurityldap
+                        pluginapirestadmin = var.pluginapirestadmin
             })
         }
     }
