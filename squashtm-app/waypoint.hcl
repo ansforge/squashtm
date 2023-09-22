@@ -42,6 +42,7 @@ app "forge/squashtm-app" {
 			pluginspringldapcore = var.pluginspringldapcore
 			pluginspringsecurityldap = var.pluginspringsecurityldap
                         pluginapirestadmin = var.pluginapirestadmin
+                        pluginsquashtmpremium = var.pluginsquashtmpremium
             })
         }
     }
@@ -127,4 +128,8 @@ variable "pluginspringsecurityldap" {
 variable "pluginapirestadmin" {
     type    = string
     default = "api.rest.admin-5.0.0.RELEASE.jar"
+}
+variable "pluginsquashtmpremium" {
+    type    = string
+    default = "squash.tm.premium-5.0.0.RELEASE.jar"
 }
