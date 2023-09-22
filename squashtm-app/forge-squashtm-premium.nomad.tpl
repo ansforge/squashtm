@@ -230,6 +230,15 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+				mount {
+                    type = "bind"
+                    target = "/opt/squash-tm/plugins/${pluginapirestadmin}"
+                    source = "local/${pluginapirestadmin}"
+                    readonly = true
+                    bind_options {
+                        propagation = "rshared"
+                    }
+                }
                 # Trustore java contenant les AC ANS
                 mount {
                     type = "bind"
