@@ -71,6 +71,12 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
+			artifact {
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginapirestadmin}"
+                options {
+                    archive = false
+                }
+            }
 
             # Récupération du fichier log4j sur Artifactory
             artifact {
