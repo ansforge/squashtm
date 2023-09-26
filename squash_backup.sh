@@ -24,7 +24,7 @@ echo "Démarrage du script de sauvegarde de Squash"
 DATE=$(date +"%Y%m%d")
 
 # Dossier où sauvegarder les backups
-BACKUP_DIR="/var/BACKUP/SQUASH"
+BACKUP_DIR="/var/backup/SQUASH"
 
 # Commande NOMAD
 #NOMAD=/usr/local/bin/nomad
