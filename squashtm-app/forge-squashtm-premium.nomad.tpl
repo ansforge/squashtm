@@ -88,7 +88,7 @@ SQTM_DB_PASSWORD={{ .Data.data.sqtm_db_password }}
                 data = <<EOH
 {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_licence }}{{ end }}
 EOH
-                destination = "secret/squash-tm.lic"
+                destination = "secrets/squash-tm.lic"
                 change_mode = "restart"
             }
 
@@ -143,8 +143,9 @@ authentication.provider=ldap
 authentication.ldap.server.url=ldap://{{ range service "openldap-forge" }}{{.Address}}:{{.Port}}{{ end }}
 # when ldap directory cannot be accessed anonymously, configure the 'manager' user DN and password
 authentication.ldap.server.managerDn=cn=Manager,dc=asipsante,dc=fr
-{{ with secret "forge/squashtm" }}
-authentication.ldap.server.managerPassword={{ .Data.data.ldap_admin_password }}
+{{ with secret "forge/openldap" }}
+#authentication.ldap.server.managerPassword={{ .Data.data.ldap_admin_password }}
+authentication.ldap.server.managerPassword={{ .Data.data.admin_password }}
 {{ end }}
 # configure a search base dn and a search query
 authentication.ldap.user.searchBase=dc=asipsante,dc=fr
@@ -154,7 +155,7 @@ authentication.ldap.user.fetchAttributes=true
 
 
                 EOH
-                destination = "secret/squash.tm.cfg.properties"
+                destination = "secrets/squash.tm.cfg.properties"
                 change_mode = "restart"
             }
 
@@ -166,7 +167,7 @@ authentication.ldap.user.fetchAttributes=true
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/license/squash-tm.lic"
-                    source = "secret/squash-tm.lic"
+                    source = "secrets/squash-tm.lic"
                     readonly = false
                     bind_options {
                         propagation = "rshared"
@@ -177,7 +178,7 @@ authentication.ldap.user.fetchAttributes=true
                 mount {
                    type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "secret/squash.tm.cfg.properties"
+                    source = "secrets/squash.tm.cfg.properties"
                     readonly = false
                     bind_options {
                        propagation = "rshared"
