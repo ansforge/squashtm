@@ -164,18 +164,22 @@ authentication.provider=ldap
 # declare the ldap server url
 authentication.ldap.server.url=ldap://{{ range service "openldap-forge" }}{{.Address}}:{{.Port}}{{ end }}
 # when ldap directory cannot be accessed anonymously, configure the 'manager' user DN and password
-authentication.ldap.server.managerDn=cn=Manager,dc=asipsante,dc=fr
+{{ with secret "forge/squashtm" }}
+authentication.ldap.server.managerDn={{ .Data.data.ldap_server_manager_Dn }}
+{{ end }}
 {{ with secret "forge/openldap" }}
 authentication.ldap.server.managerPassword={{ .Data.data.admin_password }}
 {{ end }}
 # configure a search base dn and a search query
-authentication.ldap.user.searchBase=dc=asipsante,dc=fr
-authentication.ldap.user.searchFilter=(uid={0})
+{{ with secret "forge/squashtm" }}
+authentication.ldap.user.searchBase={{ .Data.data.ldap_user_searchBase }}
+authentication.ldap.user.searchFilter={{ .Data.data.ldap_user_searchFilter }}
 # Uncomment the following property when a user cannot read its own directory node.
-authentication.ldap.user.fetchAttributes=true
+authentication.ldap.user.fetchAttributes={{ .Data.data.ldap_user_fetchAttributes }}
+{{ end }}
 
 EOH
-                destination = "secrets/squash.tm.cfg.properties"
+                destination = "local/squash.tm.cfg.properties"
                 change_mode = "restart"
             }
 
@@ -207,7 +211,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 mount {
                    type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "secrets/squash.tm.cfg.properties"
+                    source = "local/squash.tm.cfg.properties"
                     readonly = false
                     bind_options {
                        propagation = "rshared"
