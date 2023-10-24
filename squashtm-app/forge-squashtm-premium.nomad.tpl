@@ -179,7 +179,7 @@ authentication.ldap.user.fetchAttributes={{ .Data.data.ldap_user_fetchAttributes
 {{ end }}
 
 EOH
-                destination = "local/squash.tm.cfg.properties"
+                destination = "secrets/squash.tm.cfg.properties"
                 change_mode = "restart"
             }
 
@@ -211,7 +211,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 mount {
                    type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "local/squash.tm.cfg.properties"
+                    source = "secrets/squash.tm.cfg.properties"
                     readonly = false
                     bind_options {
                        propagation = "rshared"
