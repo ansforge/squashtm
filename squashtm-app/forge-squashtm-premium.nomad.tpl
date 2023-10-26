@@ -51,33 +51,33 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-			
-			# plugin LDAP sur Artifactory
-			 artifact {
+            
+            # plugin LDAP sur Artifactory
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginsecurityldap}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringldapcore}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringsecurityldap}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginapirestadmin}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginsquashtmpremium}"
                 options {
                     archive = false
@@ -123,9 +123,9 @@ EOH
                 destination = "secrets/squash-tm.lic"
                 change_mode = "restart"
             }
-			
-			# Ajout configuration LDAP dans squash.tm.cfg
-			template {
+            
+            # Ajout configuration LDAP dans squash.tm.cfg
+            template {
                 data = <<EOH
 # CONFIGURATION MANAGEMENT
 spring.profiles.include=
@@ -206,8 +206,8 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				
-				 # Fichier de configuration squash.tm.cfg
+            
+                # Fichier de configuration squash.tm.cfg
                 mount {
                    type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
@@ -258,8 +258,8 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				
-				mount {
+                
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsecurityldap}"
                     source = "local/${pluginsecurityldap}"
@@ -268,7 +268,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				mount {
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringldapcore}"
                     source = "local/${pluginspringldapcore}"
@@ -277,7 +277,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				mount {
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringsecurityldap}"
                     source = "local/${pluginspringsecurityldap}"
@@ -286,7 +286,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				mount {
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginapirestadmin}"
                     source = "local/${pluginapirestadmin}"
@@ -295,7 +295,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				mount {
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsquashtmpremium}"
                     source = "local/${pluginsquashtmpremium}"

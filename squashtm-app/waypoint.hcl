@@ -109,8 +109,6 @@ variable "repo_url" {
     type    = string
     default = "https://repo.proxy.prod.forge.esante.gouv.fr"
 }
-#modif Ã  faire
-
 
 variable "pluginsecurityldap" {
     type    = string
