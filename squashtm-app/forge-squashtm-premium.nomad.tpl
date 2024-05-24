@@ -28,6 +28,9 @@ job "forge-squashtm-premium" {
         task "squashtm" {
             driver = "docker"
 
+            # log-shipper
+            leader = true 
+
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/Jira_Cloud/${pluginjaxbapi}"
                 options {
@@ -48,26 +51,42 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-			
-			# plugin LDAP sur Artifactory
-			 artifact {
+
+            # plugin LDAP sur Artifactory
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginsecurityldap}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringldapcore}"
                 options {
                     archive = false
                 }
             }
-			artifact {
+
+            artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringsecurityldap}"
                 options {
                     archive = false
                 }
             }
+
+            artifact {
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginapirestadmin}"
+                options {
+                    archive = false
+                }
+            }
+            artifact {
+                source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginsquashtmpremium}"
+                options {
+                    archive = false
+                }
+            }
+
             # Récupération du fichier log4j sur Artifactory
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/conf/5.0.x/log4j2.xml"
@@ -75,7 +94,7 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-			
+
             # Mise en place du trustore java avec les AC ANS
             artifact {
                 source = "${repo_url}/artifactory/asip-ac/truststore/cacerts"
@@ -83,7 +102,7 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-		
+
 
             template {
                 data = <<EOH
@@ -105,7 +124,66 @@ SQTM_DB_PASSWORD={{ .Data.data.sqtm_db_password }}
                 data = <<EOH
 {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_licence }}{{ end }}
 EOH
-                destination = "secret/squash-tm.lic"
+                destination = "secrets/squash-tm.lic"
+                change_mode = "restart"
+            }
+            
+            # Ajout configuration LDAP dans squash.tm.cfg
+            template {
+                data = <<EOH
+# CONFIGURATION MANAGEMENT
+spring.profiles.include=
+
+# EMBEDDED SERVER CONFIGURATION
+###############################
+# In HTTPS environments, allows to make sure the internal redirections use the HTTPS protocol
+server.tomcat.use-relative-redirects=true
+
+# REPORTS
+#########
+report.criteria.project.multiselect=false
+
+# BUGTRACKER CONNECTORS
+#######################
+squashtm.bugtracker.timeout=15
+
+# ADMIN FEATURE CONFIGURATION
+#############################
+# !!!! PLEASE READ THE DOCUMENTATION ABOUT THIS FEATURE BEFORE ACTIVATING IT !!!
+squashtm.feature.file.repository = false
+# This can represent a security leak, but ease problems resolution by allow users to provide stack traces to Henix support
+squashtm.stack.trace.control.panel.visible = false
+
+# CONFIGURATION FOR XSQUASH4JIRA PLUGIN
+#######################################
+# if not provided will be defaulted to 300 sec ie 5 minutes
+squash.external.synchronisation.delay = 300
+# Size of the batch size for jira rest API.
+plugin.synchronisation.jira.batchSize = 50
+
+# AUTHENTICATION CONFIGURATION FOR SINGLE LDAP
+###################################################
+# Defines the authentication provider
+authentication.provider=ldap
+# declare the ldap server url
+authentication.ldap.server.url=ldap://{{ range service "openldap-forge" }}{{.Address}}:{{.Port}}{{ end }}
+# when ldap directory cannot be accessed anonymously, configure the 'manager' user DN and password
+{{ with secret "forge/squashtm" }}
+authentication.ldap.server.managerDn={{ .Data.data.ldap_server_manager_Dn }}
+{{ end }}
+{{ with secret "forge/openldap" }}
+authentication.ldap.server.managerPassword={{ .Data.data.admin_password }}
+{{ end }}
+# configure a search base dn and a search query
+{{ with secret "forge/squashtm" }}
+authentication.ldap.user.searchBase={{ .Data.data.ldap_user_searchBase }}
+authentication.ldap.user.searchFilter={{ .Data.data.ldap_user_searchFilter }}
+# Uncomment the following property when a user cannot read its own directory node.
+authentication.ldap.user.fetchAttributes={{ .Data.data.ldap_user_fetchAttributes }}
+{{ end }}
+
+EOH
+                destination = "secrets/squash.tm.cfg.properties"
                 change_mode = "restart"
             }
 			# Ajout configuration LDAP dans squash.tm.cfg
@@ -126,6 +204,16 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 env = true
             }
 
+            # Ajout d'une configuration pour le proxy sortant
+            template {
+                data = <<EOH
+JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortant_https_host} -Dhttps.proxyPort=${url_proxy_sortant_https_port} -Dhttp.proxyHost=${url_proxy_sortant_http_host} -Dhttp.proxyPort=${url_proxy_sortant_http_port} -Dhttp.nonProxyHosts=${url_proxy_sortant_no_proxy}"
+                EOH
+                destination = "local/java.env"
+                change_mode = "restart"
+                env = true
+            }
+
             config {
                 image   = "${image}:${tag}"
                 ports   = ["http"]
@@ -133,7 +221,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/license/squash-tm.lic"
-                    source = "secret/squash-tm.lic"
+                    source = "secrets/squash-tm.lic"
                     readonly = false
                     bind_options {
                         propagation = "rshared"
@@ -144,13 +232,14 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 mount {
                    type = "bind"
                     target = "/opt/squash-tm/conf/squash.tm.cfg.properties"
-                    source = "secret/squash.tm.cfg.properties"
+                    source = "secrets/squash.tm.cfg.properties"
                     readonly = false
                     bind_options {
                        propagation = "rshared"
                     }
                 }
-				# Fichier de configuration log4j2
+
+                # Fichier de configuration log4j2
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/conf/log4j2.xml"
@@ -190,33 +279,45 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-				mount {
+
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsecurityldap}"
                     source = "local/${pluginsecurityldap}"
-                    readonly = true
-                    bind_options {
-                        propagation = "rshared"
-                    }
                 }
-				mount {
+
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringldapcore}"
                     source = "local/${pluginspringldapcore}"
-                    readonly = true
-                    bind_options {
-                        propagation = "rshared"
-                    }
                 }
-				mount {
+
+                mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringsecurityldap}"
                     source = "local/${pluginspringsecurityldap}"
+                }
+                
+                mount {
+                    type = "bind"
+                    target = "/opt/squash-tm/plugins/${pluginapirestadmin}"
+                    source = "local/${pluginapirestadmin}"
                     readonly = true
                     bind_options {
                         propagation = "rshared"
                     }
                 }
+
+                mount {
+                    type = "bind"
+                    target = "/opt/squash-tm/plugins/${pluginsquashtmpremium}"
+                    source = "local/${pluginsquashtmpremium}"
+                    readonly = true
+                    bind_options {
+                        propagation = "rshared"
+                    }
+                }
+
                 # Trustore java contenant les AC ANS
                 mount {
                     type = "bind"
@@ -247,5 +348,36 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 }
             }
         }
+
+        # log-shipper
+        task "log-shipper" {
+            driver = "docker"
+            restart {
+                    interval = "3m"
+                    attempts = 5
+                    delay    = "15s"
+                    mode     = "delay"
+            }
+            meta {
+                INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+            }
+            template {
+                data = <<EOH
+REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
+PILE_ELK_APPLICATION = SQUASHTM 
+EOH
+                destination = "local/file.env"
+                change_mode = "restart"
+                env = true
+            }
+            config {
+                image = "ans/nomad-filebeat:8.2.3-2.0"
+            }
+            resources {
+                cpu    = 100
+                memory = 150
+            }
+        } #end log-shipper 
+
     }
 }
