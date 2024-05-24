@@ -342,8 +342,8 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                 } 
             }
             resources {
-                cpu    = 600
-                memory = 4096
+                cpu    = 500
+                memory = 2048
             }
             
             service {
