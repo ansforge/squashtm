@@ -51,7 +51,7 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
-            
+
             # plugin LDAP sur Artifactory
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginsecurityldap}"
@@ -59,18 +59,21 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
+
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringldapcore}"
                 options {
                     archive = false
                 }
             }
+
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/ldap/${pluginspringsecurityldap}"
                 options {
                     archive = false
                 }
             }
+
             artifact {
                 source = "${repo_url}/artifactory/ext-tools/squash-tm/plugins/admin/${pluginapirestadmin}"
                 options {
@@ -99,6 +102,7 @@ job "forge-squashtm-premium" {
                     archive = false
                 }
             }
+
 
             template {
                 data = <<EOH
@@ -182,6 +186,23 @@ EOH
                 destination = "secrets/squash.tm.cfg.properties"
                 change_mode = "restart"
             }
+			# Ajout configuration LDAP dans squash.tm.cfg
+			template {
+                data = <<EOH
+{{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_cfg }}{{ end }}
+EOH
+                destination = "secret/squash.tm.cfg.properties"
+                change_mode = "restart"
+            }
+            # Ajout d'une configuration pour le proxy sortant
+            template {
+                data = <<EOH
+JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortant_https_host} -Dhttps.proxyPort=${url_proxy_sortant_https_port} -Dhttp.proxyHost=${url_proxy_sortant_http_host} -Dhttp.proxyPort=${url_proxy_sortant_http_port} -Dhttp.nonProxyHosts=${url_proxy_sortant_no_proxy}"
+                EOH
+                destination = "local/java.env"
+                change_mode = "restart"
+                env = true
+            }
 
             # Ajout d'une configuration pour le proxy sortant
             template {
@@ -206,7 +227,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-            
+
                 # Fichier de configuration squash.tm.cfg
                 mount {
                    type = "bind"
@@ -258,7 +279,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
-                
+
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsecurityldap}"
@@ -268,6 +289,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringldapcore}"
@@ -277,6 +299,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringsecurityldap}"
@@ -286,6 +309,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+                
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginapirestadmin}"
@@ -295,6 +319,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsquashtmpremium}"
@@ -304,6 +329,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                         propagation = "rshared"
                     }
                 }
+
                 # Trustore java contenant les AC ANS
                 mount {
                     type = "bind"
