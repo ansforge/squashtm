@@ -284,18 +284,30 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginsecurityldap}"
                     source = "local/${pluginsecurityldap}"
+                    readonly = true
+                    bind_options {
+                        propagation = "rshared"
+                    }
                 }
 
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringldapcore}"
                     source = "local/${pluginspringldapcore}"
+                    readonly = true
+                    bind_options {
+                        propagation = "rshared"
+                    }
                 }
 
                 mount {
                     type = "bind"
                     target = "/opt/squash-tm/plugins/${pluginspringsecurityldap}"
                     source = "local/${pluginspringsecurityldap}"
+                    readonly = true
+                    bind_options {
+                        propagation = "rshared"
+                    }
                 }
                 
                 mount {
