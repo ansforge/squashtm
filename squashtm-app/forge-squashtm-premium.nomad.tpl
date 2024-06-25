@@ -169,7 +169,7 @@ JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Dhttps.proxyHost=${url_proxy_sortan
             }
             resources {
                 cpu    = 600
-                memory = 4096
+                memory = 2048
             }
             
             service {
@@ -212,8 +212,8 @@ EOH
                 image = "ans/nomad-filebeat:8.2.3-2.0"
             }
             resources {
-                cpu    = 100
-                memory = 150
+                cpu    = 50
+                memory = 100
             }
         } #end log-shipper 
 

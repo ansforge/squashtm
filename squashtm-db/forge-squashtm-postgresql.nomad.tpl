@@ -50,7 +50,7 @@ POSTGRES_PASSWORD = {{ with secret "forge/squashtm" }}{{ .Data.data.sqtm_db_pass
             }
             resources {
                 cpu    = 2000
-                memory = 2048
+                memory = 1024
             }
             
             service {
@@ -91,8 +91,8 @@ EOH
                 image = "ans/nomad-filebeat:8.2.3-2.0"
             }
             resources {
-                cpu    = 100
-                memory = 150
+                cpu    = 50
+                memory = 100
             }
         } #end log-shipper 
 
