@@ -22,19 +22,20 @@ echo "Démarrage du script de sauvegarde de Squash"
 
 # Configuration de base: datestamp e.g. YYYYMMDD
 DATE=$(date +"%Y%m%d")
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Dossier où sauvegarder les backups
-BACKUP_DIR="/var/backup/SQUASH"
+BACKUP_DIR="/var/backup/squash"
 
 # Commande NOMAD
 #NOMAD=/usr/local/bin/nomad
 NOMAD=$(which nomad)
 
 #Name of the dump file (Bdd Rhodecode)
-DUMP_FILENAME="BACKUP_SQUASH_BDD_${DATE}.dump"
+DUMP_FILENAME="backup_squash_bdd_${DATE}.dump"
 
 # Nombre de jours à garder les dossiers (seront effacés après X jours)
-RETENTION=3
+RETENTION=10
 
 # ---- NE RIEN MODIFIER SOUS CETTE LIGNE ------------------------------------------
 #
@@ -42,19 +43,19 @@ RETENTION=3
 mkdir -p $BACKUP_DIR/$DATE
 
 # Dump Squash bdd
-echo "starting Squash dump..."
+echo "${TIMESTAMP} starting Squash dump..."
 $NOMAD exec -task postgres -job forge-squashtm-postgresql  pg_dump -F c --dbname=postgresql://postgres@localhost/squashtm > $BACKUP_DIR/$DATE/$DUMP_FILENAME
 
 DUMP_RESULT=$?
 if [ $DUMP_RESULT -gt 0 ]
 then
-        echo "Squash dump failed with error code : ${DUMP_RESULT}"
+        echo "${TIMESTAMP} Backup Squash dump failed with error code : ${DUMP_RESULT}"
         exit 1
 else
-        echo "Squash dump done"
+        echo "${TIMESTAMP} Backup Squash dump done"
 fi
 
 # Remove files older than X days
 find $BACKUP_DIR/* -mtime +$RETENTION -exec rm -rf {} \;
 
-echo "Backup Squash finished"
+echo "${TIMESTAMP} Backup Squash finished"
