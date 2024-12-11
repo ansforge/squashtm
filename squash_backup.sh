@@ -44,19 +44,19 @@ RETENTION=10
 mkdir -p $BACKUP_DIR/$DATE
 
 # Dump Squash bdd
-echo "$(date +"%Y-%m-%d %H:%M:%S") starting Squash dump..."
+echo "$(date +"%Y-%m-%d %H:%M:%S") starting Squash dump..." >> $BACKUP_DIR/squash_backup-cron-`date +\%F`.log
 $NOMAD exec -task postgres -job forge-squashtm-postgresql  pg_dump -F c --dbname=postgresql://postgres@localhost/squashtm > $BACKUP_DIR/$DATE/$DUMP_FILENAME
 
 DUMP_RESULT=$?
 if [ $DUMP_RESULT -gt 0 ]
 then
-        echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash dump failed with error code : ${DUMP_RESULT}"
+        echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash dump failed with error code : ${DUMP_RESULT}" >> $BACKUP_DIR/squash_backup-cron-`date +\%F`.log
         exit 1
 else
-        echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash dump done"
+        echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash dump done" >> $BACKUP_DIR/squash_backup-cron-`date +\%F`.log
 fi
 
 # Remove files older than X days
 find $BACKUP_DIR/* -mtime +$RETENTION -exec rm -rf {} \;
 
-echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash finished"
+echo "$(date +"%Y-%m-%d %H:%M:%S") Backup Squash finished" >> $BACKUP_DIR/squash_backup-cron-`date +\%F`.log
